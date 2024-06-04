@@ -10,11 +10,12 @@ const int output_height = 40;
 const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
+// generally r1 < r2 FYI.
 const float r1 = 1; // thickness of donut cross sections
-const float r2 = 7; // size of donut hole
+const float r2 = 7; // length of donut's centerpoint to any given center of donut cross section
 
 const float k1 = 43; // "field of view"
-const float k2 = 30; // depth of object (higher val = father away object is from eye)
+const float k2 = 14; // depth of object (higher val = father away object is from eye)
 
 void render(){
     char arr[output_height][output_width];
