@@ -37,20 +37,21 @@ void render(){
             z = z + k2; // make the object further away, so eye at the origin can actually see the whole thing
 
             // projection of the 3D object to our 2D screen
+            x+= 11;
             int xp = rintf(k1*x/(z));
-            xp += output_width
+            y+= 7;
             int yp = rintf(k1*y/(z));
-            yp += output_height
+            //yp += output_height/2;
             arr[yp][xp] = '.';
 
-            ///*
+            //*
             for(int i = (output_height-1); i > 0; --i){
                 for(int j = 0; j < output_width; ++j){
                     printf("%c",arr[i][j]);
                 }
                 printf("\n");
             }
-            usleep(200);
+            //usleep(200);
             //*/
 
         }
