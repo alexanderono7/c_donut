@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include <math.h>
+#include <unistd.h> // for sleep; delete later
 #define pi M_PI
 
 // width/height of the output "window"
 const int output_width = 100;
-const int output_height = 30;
+const int output_height = 40;
 
 const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
-const float r1 = 2; // thickness of donut cross sections
+const float r1 = 3; // thickness of donut cross sections
 const float r2 = 5; // size of donut hole
 
-const float k1 = 200; // "field of view"
-const float k2 = 23; // depth of object (higher val = father away object is from eye)
+const float k1 = 43; // "field of view"
+const float k2 = 17; // depth of object (higher val = father away object is from eye)
 
 void render(){
     char arr[output_height][output_width];
@@ -35,14 +36,27 @@ void render(){
             float z = -(r2 + r1*cos(theta))*sin(phi);
             z = z + k2; // make the object further away, so eye at the origin can actually see the whole thing
 
-            // project of the 3D object to our 2D screen
-            int xp = k1*x/(z+k2);
-            int yp = k1*y/(z+k2);
+            // projection of the 3D object to our 2D screen
+            x+=11;
+            int xp = rintf(k1*x/(z));
+            y+=7;
+            int yp = rintf(k1*y/(z));
             arr[yp][xp] = '.';
+
+            ///*
+            for(int i = (output_height-1); i > 0; --i){
+                for(int j = 0; j < output_width; ++j){
+                    printf("%c",arr[i][j]);
+                }
+                printf("\n");
+            }
+            usleep(300);
+            //*/
+
         }
     }
 
-    for(int i = 0; i < output_height; ++i){
+    for(int i = (output_height-1); i > 0; --i){
         for(int j = 0; j < output_width; ++j){
             printf("%c",arr[i][j]);
         }
