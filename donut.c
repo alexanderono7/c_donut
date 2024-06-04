@@ -10,11 +10,11 @@ const int output_height = 40;
 const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
-const float r1 = 3; // thickness of donut cross sections
-const float r2 = 5; // size of donut hole
+const float r1 = 1; // thickness of donut cross sections
+const float r2 = 7; // size of donut hole
 
 const float k1 = 43; // "field of view"
-const float k2 = 17; // depth of object (higher val = father away object is from eye)
+const float k2 = 30; // depth of object (higher val = father away object is from eye)
 
 void render(){
     char arr[output_height][output_width];
@@ -37,10 +37,10 @@ void render(){
             z = z + k2; // make the object further away, so eye at the origin can actually see the whole thing
 
             // projection of the 3D object to our 2D screen
-            x+= 11;
             int xp = rintf(k1*x/(z));
-            y+= 7;
+            xp+= output_width/2;
             int yp = rintf(k1*y/(z));
+            yp+= output_height/2;
             //yp += output_height/2;
             arr[yp][xp] = '.';
 
