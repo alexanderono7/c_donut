@@ -11,7 +11,7 @@ const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
 // generally should have r1 < r2 FYI.
-const float r1 = 2; // thickness of donut cross sections
+const float r1 = 3; // thickness of donut cross sections
 const float r2 = 7; // length of donut's centerpoint to any given center of donut cross section
 
 const float k1 = 80; // "field of view"
