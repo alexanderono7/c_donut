@@ -11,11 +11,11 @@ const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
 // generally r1 < r2 FYI.
-const float r1 = 1; // thickness of donut cross sections
+const float r1 = 2; // thickness of donut cross sections
 const float r2 = 7; // length of donut's centerpoint to any given center of donut cross section
 
 const float k1 = 43; // "field of view"
-const float k2 = 14; // depth of object (higher val = father away object is from eye)
+const float k2 = 20; // depth of object (higher val = father away object is from eye)
 
 void render(float A, float B){
     char arr[output_height][output_width];
@@ -54,13 +54,7 @@ void render(float A, float B){
             if(xp >= 0 && xp < output_width){
                 if(yp >= 0 && yp < output_height){
                     arr[yp][xp] = '.';
-                }else{
-                    //printf("There is an issue with yp");
-                    //printf("yp value: %i",yp);
-                    //exit(1);
                 }
-            }else{
-                printf("There is an issue with xp");
             }
 
             // for debugging; delete later:
@@ -87,12 +81,8 @@ void render(float A, float B){
 }
 
 int main() {
-    for (float a = 0; a < 2*pi ; a+=0.10){
-        for (float b = 0; b < 2*pi ; b+=0.10){
-            render(a,b);
-        //printf("a: %f",a);
-        //printf("b: %f",b);
-        }
+    for (float a = 0; a < 8*pi ; a+=0.05){
+        render(2*a,a);
     }
     return 0;
 }
