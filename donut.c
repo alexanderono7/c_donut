@@ -15,15 +15,17 @@ const float r1 = 3; // thickness of donut cross sections
 const float r2 = 7; // length of donut's centerpoint to any given center of donut cross section
 
 const float k1 = 80; // "field of view"
-const float k2 = 30; // depth of object (higher val = father away object is from eye)
+const float k2 = 37; // depth of object (higher val = father away object is from eye)
 
 // A and B are angles of rotation for the donut
 void render(float A, float B){
     char arr[output_height][output_width];
+    float zbuff[output_height][output_width];
 
     for(int i = 0; i < output_height; ++i){
         for(int j = 0; j < output_width; ++j){
             arr[i][j] = ' ';
+            zbuff[i][j] = 0;
         }
     }
 
@@ -50,16 +52,20 @@ void render(float A, float B){
             float z = cosA*(circlex)*sinphi + sinA*circley;
 
             z += k2; // make the object further away, so eye at the origin can actually see the whole thing
+            float ooz = 1/z; //"one over z". saves time by calculating it only once
 
             // projection of the 3D object to our 2D screen
-            int xp = rintf(k1*x/(z));
+            int xp = rintf(k1*x*ooz);
             xp+= output_width/2;
-            int yp = rintf(k1*y/(z));
+            int yp = rintf(k1*y*ooz);
             yp+= output_height/2;
 
             // discard point if it would not be in the viewing plane
             if((xp >= 0 && xp < output_width) && (yp >= 0 && yp < output_height)){
-                arr[yp][xp] = 'X';
+                if(ooz > zbuff[yp][xp]){
+                    arr[yp][xp] = 'X';
+                    zbuff[yp][xp] = ooz;
+                }
             }
 
             // for debugging; delete later:
