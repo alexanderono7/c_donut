@@ -5,7 +5,7 @@
 
 // width/height of the output "window"
 const int output_width = 100;
-const int output_height = 40;
+const int output_height = 60;
 
 const float phi_inc = 0.02;
 const float theta_inc = 0.07;
@@ -87,8 +87,8 @@ void render(float A, float B){
 }
 
 int main() {
-    for (float a = 0; a < 16*pi ; a+=0.01){
-        for (float b = 0; b < 16*pi ; b+=0.01){
+    for (float a = 0; a < 2*pi ; a+=0.10){
+        for (float b = 0; b < 2*pi ; b+=0.10){
             render(a,b);
         //printf("a: %f",a);
         //printf("b: %f",b);
