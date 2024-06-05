@@ -17,7 +17,7 @@ const float r2 = 7; // length of donut's centerpoint to any given center of donu
 const float k1 = 43; // "field of view"
 const float k2 = 14; // depth of object (higher val = father away object is from eye)
 
-void render(){
+void render(float A, float B){
     char arr[output_height][output_width];
 
     for(int i = 0; i < output_height; ++i){
@@ -32,10 +32,15 @@ void render(){
             float x = r2 + r1*cos(theta);
             float y = r1*sin(theta);
 
-            // applying 3D transformation matrix (y remains unchanged because donut extrudes around y-axis)
+            // matrix multiplying by 3D rotation matrix, rotational extrusion (y remains unchanged because donut extrudes around y-axis)
             x = x*cos(phi);
-            float z = -(r2 + r1*cos(theta))*sin(phi);
+            float z = (r2 + r1*cos(theta))*sin(phi); // is this supposed to be negative??
             z = z + k2; // make the object further away, so eye at the origin can actually see the whole thing
+
+            // matrix multiplying- applying rotation matrices for animated rotation of entire donut
+            x = x * (cos(B)*cos(phi) + sin(A)*sin(B)*sin(phi)) - r1*cos(A)*sin(B)*sin(theta);
+            y = (r2+y)*(cos(phi)*sin(B)-cos(B)*sin(A)*sin(phi)) + r1*cos(A)*cos(B)*sin(theta);
+            z = cos(A)*z + r1*sin(A)*sin(theta);
 
             // projection of the 3D object to our 2D screen
             int xp = rintf(k1*x/(z));
@@ -45,7 +50,8 @@ void render(){
             //yp += output_height/2;
             arr[yp][xp] = '.';
 
-            //*
+            // for debugging; delete later:
+            /*
             for(int i = (output_height-1); i > 0; --i){
                 for(int j = 0; j < output_width; ++j){
                     printf("%c",arr[i][j]);
@@ -53,7 +59,7 @@ void render(){
                 printf("\n");
             }
             //usleep(200);
-            //*/
+            */
 
         }
     }
@@ -67,6 +73,8 @@ void render(){
 }
 
 int main() {
-    render();
+    for (float a = 0; a < 2*pi ; a+=0.01){
+        render(a,a);
+    }
     return 0;
 }
