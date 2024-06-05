@@ -49,10 +49,22 @@ void render(float A, float B){
             xp+= output_width/2;
             int yp = rintf(k1*y/(z));
             yp+= output_height/2;
-            arr[yp][xp] = '.';
+            yp+=5;
+
+            if(xp >= 0 && xp < output_width){
+                if(yp >= 0 && yp < output_height){
+                    arr[yp][xp] = '.';
+                }else{
+                    //printf("There is an issue with yp");
+                    //printf("yp value: %i",yp);
+                    //exit(1);
+                }
+            }else{
+                printf("There is an issue with xp");
+            }
 
             // for debugging; delete later:
-            //*
+            /*
             for(int i = (output_height-1); i > 0; --i){
                 for(int j = 0; j < output_width; ++j){
                     printf("%c",arr[i][j]);
@@ -75,12 +87,12 @@ void render(float A, float B){
 }
 
 int main() {
-    render(0,0);
-    //for (float a = 0; a < 16*pi ; a+=0.03){
-        //for (float b = 0; b < 16*pi ; b+=0.03){
+    for (float a = 0; a < 16*pi ; a+=0.01){
+        for (float b = 0; b < 16*pi ; b+=0.01){
+            render(a,b);
         //printf("a: %f",a);
         //printf("b: %f",b);
-        //}
-    //}
+        }
+    }
     return 0;
 }
