@@ -29,17 +29,27 @@ void render(float A, float B){
 
     for (float phi = 0; phi < (2*pi); phi+=phi_inc){
         for (float theta = 0; theta < (2*pi); theta+=theta_inc){
+            // pre-calculated sin/cos values of interest for efficiency
+            float sintheta = sin(theta);
+            float costheta = cos(theta);
+            float sinphi = sin(phi);
+            float cosphi = cos(phi);
+            float sinA = sin(A);
+            float cosA = cos(A);
+            float sinB = sin(B);
+            float cosB = cos(B);
+
             // calculation of 2D cross section's points
-            float circlex = r2 + r1*cos(theta);
-            float circley = r1*sin(theta);
+            float circlex = r2 + r1*costheta;
+            float circley = r1*sintheta;
 
             // matrix multiplying by 3D rotation matrix, rotational extrusion (y remains unchanged because donut extrudes around y-axis)
             // also includes matrix multiplying- applying rotation matrices for animated rotation of entire donut
-            float x = (circlex) * (cos(B)*cos(phi) + sin(A)*sin(B)*sin(phi)) - r1*cos(A)*sin(B)*sin(theta);
-            float y = (r2+r1*cos(theta))*(cos(phi)*sin(B)-cos(B)*sin(A)*sin(phi)) + r1*cos(A)*cos(B)*sin(theta);
-            float z = cos(A)*(r2+r1*cos(theta))*sin(phi) + r1*sin(A)*sin(theta);
+            float x = circlex * (cosB*cosphi + sinA*sinB*sinphi) - r1*cosA*sinB*sintheta;
+            float y = circlex * (cosphi*sinB - cosB*sinA*sinphi) + cosA*cosB*circley;
+            float z = cosA*r2+r1*costheta*sinphi + sinA*circley;
 
-            z = z + k2; // make the object further away, so eye at the origin can actually see the whole thing
+            z += k2; // make the object further away, so eye at the origin can actually see the whole thing
 
             // projection of the 3D object to our 2D screen
             int xp = rintf(k1*x/(z));
@@ -78,9 +88,8 @@ void render(float A, float B){
 }
 
 int main() {
-    for (float a = 0; a < 8*pi ; a+=0.05){
+    for (float a = 0; a < 8*pi ; a+=0.01){
         render(2*a,a);
-        usleep(800);
     }
     return 0;
 }
