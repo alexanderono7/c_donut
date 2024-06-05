@@ -14,8 +14,8 @@ const float theta_inc = 0.07;
 const float r1 = 2; // thickness of donut cross sections
 const float r2 = 7; // length of donut's centerpoint to any given center of donut cross section
 
-const float k1 = 40; // "field of view"
-const float k2 = 20; // depth of object (higher val = father away object is from eye)
+const float k1 = 80; // "field of view"
+const float k2 = 30; // depth of object (higher val = father away object is from eye)
 
 // A and B are angles of rotation for the donut
 void render(float A, float B){
@@ -41,13 +41,13 @@ void render(float A, float B){
 
             // calculation of 2D cross section's points
             float circlex = r2 + r1*costheta;
-            float circley = r1*sintheta;
+            float circley = r1 * sintheta;
 
             // matrix multiplying by 3D rotation matrix, rotational extrusion (y remains unchanged because donut extrudes around y-axis)
-            // also includes matrix multiplying- applying rotation matrices for animated rotation of entire donut
+            // also applying rotation matrices for animated rotation of entire donut
             float x = circlex * (cosB*cosphi + sinA*sinB*sinphi) - r1*cosA*sinB*sintheta;
             float y = circlex * (cosphi*sinB - cosB*sinA*sinphi) + cosA*cosB*circley;
-            float z = cosA*r2+r1*costheta*sinphi + sinA*circley;
+            float z = cosA*r2 + r1*costheta*sinphi + sinA*circley;
 
             z += k2; // make the object further away, so eye at the origin can actually see the whole thing
 
@@ -56,7 +56,6 @@ void render(float A, float B){
             xp+= output_width/2;
             int yp = rintf(k1*y/(z));
             yp+= output_height/2;
-            yp+=5;
 
             // discard point if it would not be in the viewing plane
             if((xp >= 0 && xp < output_width) && (yp >= 0 && yp < output_height)){
@@ -88,8 +87,9 @@ void render(float A, float B){
 }
 
 int main() {
-    for (float a = 0; a < 8*pi ; a+=0.01){
+    for (float a = 0; a < 8*pi ; a+=0.005){
         render(2*a,a);
+        //usleep(100000);
     }
     return 0;
 }
