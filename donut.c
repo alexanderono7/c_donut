@@ -45,9 +45,9 @@ void render(float A, float B){
 
             // matrix multiplying by 3D rotation matrix, rotational extrusion (y remains unchanged because donut extrudes around y-axis)
             // also applying rotation matrices for animated rotation of entire donut
-            float x = circlex * (cosB*cosphi + sinA*sinB*sinphi) - r1*cosA*sinB*sintheta;
+            float x = circlex * (cosB*cosphi + sinA*sinB*sinphi) - cosA*sinB*circley;
             float y = circlex * (cosphi*sinB - cosB*sinA*sinphi) + cosA*cosB*circley;
-            float z = cosA*r2 + r1*costheta*sinphi + sinA*circley;
+            float z = cosA*(circlex)*sinphi + sinA*circley;
 
             z += k2; // make the object further away, so eye at the origin can actually see the whole thing
 
