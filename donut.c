@@ -64,14 +64,14 @@ void render(float A, float B){
             //float L = cosphi*costheta*cosB - cosA*costheta*sintheta - sinA*sintheta + cosB*(cosA*sintheta - costheta*sinA*sinphi);
             float y_lumin = (-sinA*sinphi*costheta + sintheta*cosA)*cosB + sinB*cosphi*costheta;
             float z_lumin = sinA*sintheta + sinphi*cosA*costheta;
-            float L = y_lumin + 10 * z_lumin;
-            char lumin[] = ".,~-=!*#X$@";
+            float L = y_lumin - z_lumin;
+            char lumin[] = ".,-~:;=!*#$@";
 
             // discard point if it would not be in the viewing plane
             if((xp >= 0 && xp < output_width) && (yp >= 0 && yp < output_height)){
                 if(L > 0){
                     if(ooz > zbuff[yp][xp]){
-                        int index = rintf(L);
+                        int index = rintf(L*8);
                         arr[yp][xp] = lumin[index];
                         zbuff[yp][xp] = ooz;
                     }
