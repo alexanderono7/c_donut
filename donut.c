@@ -60,11 +60,18 @@ void render(float A, float B){
             int yp = rintf(k1*y*ooz);
             yp+= output_height/2;
 
+            // luminance calculation (dot product of surface normal and light direction)
+            float L = cosphi*costheta*cosB - cosA*costheta*sintheta - sinA*sintheta + cosB*(cosA*sintheta - costheta*sinA*sinphi);
+            char lumin[] = ".~-#X@█";
+
             // discard point if it would not be in the viewing plane
             if((xp >= 0 && xp < output_width) && (yp >= 0 && yp < output_height)){
-                if(ooz > zbuff[yp][xp]){
-                    arr[yp][xp] = 'X';
-                    zbuff[yp][xp] = ooz;
+                if(L > 0){
+                    if(ooz > zbuff[yp][xp]){
+                        int index = rintf(L*sizeof(lumin));
+                        arr[yp][xp] = lumin[index];
+                        zbuff[yp][xp] = ooz;
+                    }
                 }
             }
 
@@ -79,10 +86,12 @@ void render(float A, float B){
             //usleep(200);
             //*/
 
+
         }
     }
 
     // print pixels to stdout
+    //char outputstr[(output_width+1) * output_height];
     for(int i = (output_height-1); i > 0; --i){
         for(int j = 0; j < output_width; ++j){
             printf("%c",arr[i][j]);
