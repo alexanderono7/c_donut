@@ -7,6 +7,7 @@
 const int output_width = 100;
 const int output_height = 57;
 
+// increments for angles "phi" and "theta"
 const float phi_inc = 0.02;
 const float theta_inc = 0.07;
 
@@ -77,19 +78,6 @@ void render(float A, float B){
                     }
                 }
             }
-
-            // for debugging; delete later:
-            /*
-            for(int i = (output_height-1); i > 0; --i){
-                for(int j = 0; j < output_width; ++j){
-                    printf("%c",arr[i][j]);
-                }
-                printf("\n");
-            }
-            //usleep(200);
-            //*/
-
-
         }
     }
 
@@ -112,7 +100,6 @@ void render(float A, float B){
 int main() {
     for (float a = 0; a < 8*pi ; a+=0.005){
         render(2*a,a);
-        //usleep(100000);
     }
     return 0;
 }
