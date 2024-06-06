@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include <unistd.h>
 #define pi M_PI
 
 // width/height of the output "window"
@@ -23,10 +22,11 @@ void render(float A, float B){
     char arr[output_height][output_width];
     float zbuff[output_height][output_width];
 
+    // initialize zbuffer and output array values
     for(int i = 0; i < output_height; ++i){
         for(int j = 0; j < output_width; ++j){
-            arr[i][j] = ' ';
             zbuff[i][j] = 0;
+            arr[i][j] = ' ';
         }
     }
 
@@ -62,15 +62,16 @@ void render(float A, float B){
             yp+= output_height/2;
 
             // luminance calculation (dot product of surface normal and light direction)
-            //float L = cosphi*costheta*cosB - cosA*costheta*sintheta - sinA*sintheta + cosB*(cosA*sintheta - costheta*sinA*sinphi);
             float y_lumin = (-sinA*sinphi*costheta + sintheta*cosA)*cosB + sinB*cosphi*costheta;
             float z_lumin = sinA*sintheta + sinphi*cosA*costheta;
-            float L = y_lumin - z_lumin;
+            float L = y_lumin - z_lumin; // L should range from -sqrt(2) to +sqrt(2)
             char lumin[] = ".,-~:;=!*#$@";
 
             // discard point if it would not be in the viewing plane
             if((xp >= 0 && xp < output_width) && (yp >= 0 && yp < output_height)){
+                // check if light shines on object
                 if(L > 0){
+                    // check if zbuffer is already filled with closer pixel
                     if(ooz > zbuff[yp][xp]){
                         int index = rintf(L*8);
                         arr[yp][xp] = lumin[index];
@@ -81,7 +82,7 @@ void render(float A, float B){
         }
     }
 
-    // print pixels to stdout
+    // transfer pixels to single string, then print output
     int c = 0;
     char outputstr[(output_width+1) * output_height];
     for(int i = (output_height-1); i > 0; --i){
@@ -93,7 +94,7 @@ void render(float A, float B){
         c++;
     }
     printf("\x1b[H"); // fixes "flickering" issue
-    printf(outputstr);
+    printf("%s", outputstr);
     return;
 }
 
