@@ -94,13 +94,17 @@ void render(float A, float B){
     }
 
     // print pixels to stdout
-    //char outputstr[(output_width+1) * output_height];
+    int c = 0;
+    char outputstr[(output_width+1) * output_height];
     for(int i = (output_height-1); i > 0; --i){
         for(int j = 0; j < output_width; ++j){
-            printf("%c",arr[i][j]);
+            outputstr[c] = arr[i][j];
+            c++;
         }
-        printf("\n");
+        outputstr[c] = '\n';
+        c++;
     }
+    printf(outputstr);
     return;
 }
 
