@@ -104,6 +104,7 @@ void render(float A, float B){
         outputstr[c] = '\n';
         c++;
     }
+    printf("\x1b[H"); // fixes "flickering" issue
     printf(outputstr);
     return;
 }
